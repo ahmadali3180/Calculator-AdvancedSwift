@@ -18,17 +18,23 @@ class ViewController: UIViewController {
             return numValue
         }
         set {
-            displayLabel.text = String(newValue)
+            if newValue == 0 {
+                displayLabel.text = String(newValue)
+            }
         }
     }
+    
+    private var calculator = CalculatorLogic()
     
     @IBAction func calcButtonPressed(_ sender: UIButton) {
         
         isFinishedTypingNumber = true
         if let calcMethod = sender.currentTitle {
-            let calculator = CalculatorLogic(number: displayValue)
-            guard let result = calculator.calculate(symbol: calcMethod) else {fatalError("The result of calculation is nil.")}
-            displayValue = result
+            calculator.setNumber(displayValue)
+            if let result = calculator.calculate(symbol: calcMethod) {
+                displayLabel.text = String(result)
+                
+            }
         }
     }
     
@@ -44,7 +50,7 @@ class ViewController: UIViewController {
                         return
                     }
                 }
-                 
+                
                 displayLabel.text! += numValue
             }
             
@@ -53,4 +59,3 @@ class ViewController: UIViewController {
     }
     
 }
-
